@@ -127,3 +127,155 @@ def game_hash
 end
 
 # Write code here
+def num_points_scored(player_name)
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player|
+      if player[:player_name] == player_name
+        puts "#{player_name} scored #{player[:points]} points"
+        return player[:points]
+    end
+  end
+end
+puts "#{player_name} not found in the game hash."
+nil
+end
+
+def shoe_size(player_name)
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player|
+      if player[:player_name] == player_name
+        puts "#{player_name} has a shoe size of #{player[:shoe]}."
+        return player[:shoe] 
+    end
+  end
+end
+puts "#{player_name} not found in game hash."
+nil
+end
+
+def team_colors(team_name)
+  game_hash.each do |location, team_data|
+    if team_data[:team_name] == team_name
+      puts "#{team_name} colors: #{team_data[:colors].join(', ')}"
+      return team_data[:colors] 
+  end
+end
+puts "#{team_name} not found in the game hash."
+[]
+end
+
+def team_names
+  names = game_hash.map{ |location, team_data| team_data[:team_name] }
+  puts "Team names: #{names.join(', ')}"
+  names
+end
+
+def player_numbers(team_name)
+  game_hash.each do |location, team_data|
+    if team_data[:team_name] == team_name
+      numbers = team_data[:players].map { |player| player[:number] }
+      puts "#{team_name} player numbers: #{numbers.join(', ')}"
+      return numbers
+    end
+  end
+  puts "#{team_name} not found in game hash."
+  []
+end
+
+def player_stats(player_name)
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player|
+       if player[:player_name] == player_name
+        puts "#{player_name} stats:#{player}"
+        return player
+    end
+  end
+end
+puts "#{player_name} not found in game hash."
+{}
+end
+
+def big_shoe_rebounds
+  max_shoe_size = 0
+  rebounds = 0
+
+  game_hash.each do |loaction, team_data|
+    team_data[:players].each do |player|
+      if player[:shoe] > max_shoe_size
+        max_shoe_size = player[:shoe]
+        rebounds = player[:rebounds]
+      end
+    end
+  end
+
+  rebounds
+end
+
+#Additional methods
+def most_points_scored
+  max_points = 0
+  player_with_max_points = ""
+
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player|
+      if player[:points] > max_points
+        max_points = player[:points]
+        player_with_max_points = player[:player_name]
+      end
+    end
+  end
+
+  player_with_max_points
+end
+
+def winning_team
+  home_points = 0
+  away_points = 0
+
+  game_hash[:home][:players].each do |player|
+    home_points += player[:points]
+  end
+
+  game_hash[:away][:players].each do |player|
+    away_points += player[:points]
+  end
+
+  home_points > away_points ? game_hash[:home][:team_name] : game_hash[:away][:team_name]
+end
+
+def player_with_longest_name
+  longest_name = ""
+
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player|
+      if player[:player_name].length > longest_name.length
+        longest_name = player[:player_name]
+      end
+    end
+  end
+
+  longest_name
+end
+
+def long_name_steals_a_ton?
+  player_with_most_steals = ""
+
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player|
+      if player_with_most_steals == ""
+        player_with_most_steals = player
+      elsif player[:steals] > player_with_most_steals[:steals]
+        player_with_most_steals = player
+      end
+    end
+  end
+
+  player_with_most_steals[:player_name] == longest_name
+end
+
+puts num_points_scored("Alan Anderson")
+puts shoe_size("Reggie Evans")
+puts team_colors("Brooklyn Nets")
+puts team_names
+puts player_numbers("Brooklyn Nets")
+puts player_stats("Alan Anderson")
